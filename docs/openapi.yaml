@@ -56,6 +56,19 @@ components:
             type: string
         url:
           type: string
+      required:
+        - nombre
+        - periodo_rotacion
+        - periodo_orbital
+        - diametro
+        - clima        
+        - gravedad
+        - terreno
+        - superficie_agua
+        - poblacion
+        - residentes
+        - peliculas
+        - url    
     PutPlanetRequest:
       title: Schema PutPlanetRequest
       description: Schema para request de actualización de un planeta
@@ -90,7 +103,21 @@ components:
           items:
             type: string
         url:
-          type: string      
+          type: string  
+      required:
+        - id
+        - nombre
+        - periodo_rotacion
+        - periodo_orbital
+        - diametro
+        - clima        
+        - gravedad
+        - terreno
+        - superficie_agua
+        - poblacion
+        - residentes
+        - peliculas
+        - url    
   securitySchemes: {}
 info:
   title: Reto técnico Api AWS
