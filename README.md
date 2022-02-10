@@ -8,20 +8,13 @@ API en Node.js con el framework Serverless para un despliegue en AWS.
 * NodeJS instalado
 
 #### Instalación 
-Instalación de Serverless con NPM:
-```bash
-npm install serverless
-```
-Configuración de ACCCESS_KEY:
-```bash
-serverless config credentials --provider aws --key <ACCESS_KEY> --secret <SECRET_ACCESS_KEY>
-```
-
-#### Instalar dependencias
-
-Ejecutar el siguiente comando:
+Instalar dependencias con NPM:
 ```bash
 npm install
+```
+Configurar ACCCESS_KEY:
+```bash
+serverless config credentials --provider aws --key <ACCESS_KEY> --secret <SECRET_ACCESS_KEY>
 ```
 
 #### Despliegue
