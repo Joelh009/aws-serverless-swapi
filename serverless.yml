@@ -1,0 +1,110 @@
+service: aws-reto-tecnico
+
+plugins:
+  - serverless-offline
+
+provider:
+  name: aws
+  runtime: nodejs12.x
+  region: ${self:custom.env.REGION}
+  stage: dev
+  environment:
+    PLANET_TABLE: ${self:custom.env.PLANET_TABLE}
+    BASE_URL_SWAPI: ${self:custom.env.BASE_URL_SWAPI}
+    REGION: ${self:custom.env.REGION}
+  iamRoleStatements:
+    - Effect: Allow
+      Action:
+        - dynamodb:Query
+        - dynamodb:Scan
+        - dynamodb:GetItem
+        - dynamodb:PutItem
+        - dynamodb:UpdateItem
+        - dynamodb:DeleteItem
+        - dynamodb:DescribeTable
+      Resource: 
+        - { "Fn::GetAtt": ["PlanetTable", "Arn" ] }
+
+custom:
+  env: ${file(./env.${self:provider.stage}.json)}
+
+functions:
+  swagger:
+    handler: docs/Swagger.handler
+    description: Documentatión de Swagger
+    events:
+      - http: ANY docs/
+      - http: ANY docs/{proxy+}
+
+  getPeople:
+    handler: controller/PeopleController.listar
+    description: Lista las personas del api SWAPI
+    events:
+      - http:
+          path: /personas
+          method: get
+          cors: true
+  getPeopleBydId:
+    handler: controller/PeopleController.listarPorId
+    description: Lista la persona del api SWAPI por el id
+    events:
+      - http:
+          path: /personas/{id}
+          method: get
+          cors: true
+  getPlanets:
+    handler: controller/PlanetController.listar
+    description: Lista los planetas de Star Wars registrados en DynamoDB
+    events:
+      - http:
+          path: /planetas
+          method: get
+          cors: true
+  getPlanetBydId:
+    handler: controller/PlanetController.listarPorId
+    description: Lista el planeta de Star Wars registrado en DynamoDB
+    events:
+      - http:
+          path: /planetas/{id}
+          method: get
+          cors: true
+  deletePlanet:
+    handler: controller/PlanetController.eliminar
+    description: Elimina el planeta de Star Wars registrado en DynamoDB
+    events:
+      - http:
+          path: /planetas/{id}
+          method: delete
+          cors: true                
+  registerPlanet:
+    handler: controller/PlanetController.registrar
+    description: Registra planeta de Star Wars en DynamoDB
+    events:
+      - http:
+          path: /planetas
+          method: post
+          cors: true 
+  updatePlanet:
+    handler: controller/PlanetController.actualizar
+    description: Actualiza planeta de Star Wars en DynamoDB
+    events:
+      - http:
+          path: /planetas
+          method: put
+          cors: true               
+
+resources:
+  Resources:
+    PlanetTable:
+      Type: 'AWS::DynamoDB::Table'
+      Properties:
+        AttributeDefinitions:
+          - AttributeName: id
+            AttributeType: S
+        KeySchema:
+          - AttributeName: id
+            KeyType: HASH
+        ProvisionedThroughput:
+          ReadCapacityUnits: 1
+          WriteCapacityUnits: 1
+        TableName: ${self:custom.env.PLANET_TABLE}   

@@ -1,0 +1,325 @@
+openapi: 3.0.0
+components:
+  schemas:
+    ErrorResponse:
+      title: Schema ErrorResponse
+      description: Schema para mensajes de error
+      type: object
+      properties:
+        codMensaje:
+          type: integer
+        desMensaje:
+          type: string
+        datos:
+          type: object
+    GenericResponse:
+      title: Schema GenericResponse
+      description: Schema para mensaje de respuesta genérico
+      type: object
+      properties:
+        codMensaje:
+          type: integer
+        desMensaje:
+          type: string
+        datos:
+          type: object
+    PostPlanetRequest:
+      title: Schema PostPlanetRequest
+      description: Schema para request de registro de un planeta
+      type: object
+      properties:
+        nombre:
+          type: string
+        periodo_rotacion:
+          type: integer
+        periodo_orbital:
+          type: integer
+        diametro:
+          type: integer
+        clima:
+          type: string
+        gravedad:
+          type: string
+        terreno:
+          type: string
+        superficie_agua:
+          type: string
+        poblacion:
+          type: integer
+        residentes:
+          type: array
+          items:
+            type: string
+        peliculas:
+          type: array
+          items:
+            type: string
+        url:
+          type: string
+    PutPlanetRequest:
+      title: Schema PutPlanetRequest
+      description: Schema para request de actualización de un planeta
+      type: object
+      properties:
+        id:
+          type: string
+        nombre:
+          type: string
+        periodo_rotacion:
+          type: integer
+        periodo_orbital:
+          type: integer
+        diametro:
+          type: integer
+        clima:
+          type: string
+        gravedad:
+          type: string
+        terreno:
+          type: string
+        superficie_agua:
+          type: string
+        poblacion:
+          type: integer
+        residentes:
+          type: array
+          items:
+            type: string
+        peliculas:
+          type: array
+          items:
+            type: string
+        url:
+          type: string      
+  securitySchemes: {}
+info:
+  title: Reto técnico Api AWS
+  description: 'API en Node.js con el framework Serverless AWS'
+  version: '1.0.0'
+tags:
+- name: People
+  description: 'Api que consume People SWAPI'
+- name: Planet
+  description: 'Api que registra y lista planetas de DynamoDB'
+paths:
+  /people:
+    get:
+      tags:
+      - People
+      operationId: getPeople
+      summary: getPeople
+      description: Obtiene las personas del Api de StarWars
+      responses:
+        '200':
+          description: Personas obtenidas
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GenericResponse'
+          headers:
+            Content-Type:
+              description: Content Type header
+              schema:
+                type: string
+        '500':
+          description: Mensaje de error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+  '/people/{id}':
+    get:
+      tags:
+      - People
+      operationId: getPeopleById
+      summary: getPeopleById
+      description: Obtiene la persona según el id ingresado
+      parameters:
+      - name: id
+        in: path
+        description: Id de la persona
+        required: true
+        schema:
+          type: integer
+      responses:
+        '200':
+          description: Persona obtenida según el id
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GenericResponse'
+          headers:
+            Content-Type:
+              description: Content Type header
+              schema:
+                type: string
+        '404':
+          description: Mensaje de error cuando no existe la persona con el id indicado
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '500':
+          description: Mensaje de error 
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+  /planet:
+    get:
+      tags:
+      - Planet
+      operationId: getPlanets
+      summary: getPlanets
+      description: Obtiene los planetas registrados en DynamoDB
+      responses:
+        '200':
+          description: Planetas obtenidos
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GenericResponse'
+          headers:
+            Content-Type:
+              description: Content Type header
+              schema:
+                type: string
+        '500':
+          description: Mensaje de error 
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+    post:
+      tags:
+      - Planet
+      operationId: registerPlanet
+      summary: registerPlanet
+      description: Registra un planeta en la base de datos DynamoDB
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PostPlanetRequest'
+      responses:
+        '200':
+          description: Registro exitoso de un planeta
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GenericResponse'
+          headers:
+            Content-Type:
+              description: Content Type header
+              schema:
+                type: string
+        '500':
+          description: Mensaje de error 
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+    put:
+      tags:
+      - Planet
+      operationId: updatePlanet
+      summary: updatePlanet
+      description: Registra un planeta en la base de datos DynamoDB
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PutPlanetRequest'
+      responses:
+        '200':
+          description: Registro exitoso de un planeta
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GenericResponse'
+          headers:
+            Content-Type:
+              description: Content Type header
+              schema:
+                type: string
+        '500':
+          description: Mensaje de error 
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'                
+  '/planet/{id}':
+    get:
+      tags:
+      - Planet
+      operationId: getPlanetById
+      summary: getPlanetById
+      description: Obtiene el planeta según el id ingresado
+      parameters:
+      - name: id
+        in: path
+        description: Id del planeta
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Planeta obtenida según el id
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GenericResponse'
+          headers:
+            Content-Type:
+              description: Content Type header
+              schema:
+                type: string
+        '404':
+          description: Mensaje de error cuando no existe el planeta con el id indicado
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '500':
+          description: Mensaje de error 
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'    
+    delete:
+      tags:
+      - Planet
+      operationId: deletePlanet
+      summary: deletePlanet
+      description: Elimina al planeta según el id ingresado
+      parameters:
+      - name: id
+        in: path
+        description: Id del planeta
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Planeta eliminado según el id
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GenericResponse'
+          headers:
+            Content-Type:
+              description: Content Type header
+              schema:
+                type: string
+        '404':
+          description: Mensaje de error cuando no existe el planeta con el id indicado
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '500':
+          description: Mensaje de error 
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
