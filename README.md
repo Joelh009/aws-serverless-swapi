@@ -2,6 +2,12 @@
 ---
 API en Node.js con el framework Serverless para un despliegue en AWS.
 
+#### Consideración
+
+Tener en cuenta que actualmente no está activo el api SWAPI.
+
+![Image text](https://github.com/Joelh009/aws-serverless-swapi/blob/main/ErrorSWAPI.jpg)
+
 #### Pre-requisitos
 
 * Contar con un usuario de AWS 
