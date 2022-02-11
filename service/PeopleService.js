@@ -5,7 +5,7 @@ const HttpConstants = require('../common/constants/httpConstants');
 const ErrorConstants = require('../common/constants/errorConstants');
 const BusinessError = require('../models/error/BusinessError');
 const People = require('../common/translate/people');
-const map = require('lodash');
+const {map} = require('lodash');
 
 class PersonaService {
 
@@ -16,10 +16,7 @@ class PersonaService {
         var personasEncontradas = [];
         if(data.results){
             var personas = data.results;
-            personas.forEach(function name(per) {
-                var persona = new PersonaResponse(per);
-                personasEncontradas.push(persona);
-            });
+            personasEncontradas = map(personas, x => People.translate(x));
         }
         
         return personasEncontradas;
