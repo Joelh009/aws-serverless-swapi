@@ -16,7 +16,10 @@ class PersonaService {
         var personasEncontradas = [];
         if(data.results){
             var personas = data.results;
-            personasEncontradas = map(personas, x => People.translate(x));
+            personas.forEach(function name(per) {
+                var persona = new PersonaResponse(per);
+                personasEncontradas.push(persona);
+            });
         }
         
         return personasEncontradas;
